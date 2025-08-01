@@ -34,14 +34,14 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Upload coverage to Codecov
-        if: matrix.node-version == 18
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./coverage/lcov.info
-          fail_ci_if_error: false
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      # - name: Upload coverage to Codecov
+      #   if: matrix.node-version == 18
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     file: ./coverage/lcov.info
+      #     fail_ci_if_error: false
+      #   env:
+      #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   lint:
     name: Code Quality
