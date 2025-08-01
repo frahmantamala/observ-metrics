@@ -1,0 +1,61 @@
+{
+  "name": "observ-metrics-nuxt-demo",
+  "version": "1.0.0",
+  "description": "Nuxt 3 e-commerce demo showcasing observ-metrics  frontend monitoring",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint --ext .ts,.js,.vue .",
+    "lint:fix": "eslint --ext .ts,.js,.vue . --fix",
+    "type-check": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "@pinia/nuxt": "^0.5.1",
+    "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
+    "nuxt": "^3.11.2",
+    "pinia": "^2.1.7",
+    "observ-metrics": "^1.0.0",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@nuxt/eslint-config": "^0.3.6",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "@types/node": "^20.12.7",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.25.0",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "nuxt",
+    "vue",
+    "typescript",
+    "e-commerce",
+    "monitoring",
+    "observability", 
+    "opentelemetry",
+    "frontend-monitoring",
+    "business-metrics",
+    "demo"
+  ],
+  "author": {
+    "name": "Fadhil",
+    "email": "your-email@example.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/observ-metrics.git",
+    "directory": "examples/nuxt-ecommerce"
+  }
+}

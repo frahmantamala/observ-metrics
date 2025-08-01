@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanilla JS Example - observ-metrics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .monitoring-feed {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .log-info { background: rgba(0, 123, 255, 0.2); }
+        .log-success { background: rgba(40, 167, 69, 0.2); }
+        .log-warning { background: rgba(255, 193, 7, 0.2); }
+        .log-error { background: rgba(220, 53, 69, 0.2); }
+        
+        .stats-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .demo-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .user-context {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .business-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>observ-metrics - Vanilla JS Demo</h1>
+        <div class="controls">
+            <button id="loginBtn">Simulate Login</button>
+            <button id="searchBtn">Search Products</button>
+            <button id="addToCartBtn">Add to Cart</button>
+            <button id="checkoutBtn">Checkout Flow</button>
+            <button id="errorBtn">Trigger Error</button>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h3> Monitoring in Action</h3>
+        <p>This demo shows how <strong>observ-metrics</strong> eliminates noise and adds business context to frontend monitoring:</p>
+        <ul>
+            <li><strong>Bot Detection:</strong> Automatically filters out automated traffic</li>
+            <li><strong>Business Context:</strong> Every event tagged with domain and business impact</li>
+            <li><strong>User Journey Tracking:</strong> Multi-step flow analysis with conversion metrics</li>
+            <li><strong>SLA Monitoring:</strong> Real-time performance against business targets</li>
+        </ul>
+        
+        <div class="user-context">
+            <strong>Current User Context:</strong>
+            <div id="userContext"></div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h3>Business Metrics Dashboard</h3>
+        <div class="business-metrics">
+            <div class="metric-card">
+                <div class="metric-value" id="loginAttempts">0</div>
+                <div class="metric-label">Login Attempts</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="searchQueries">0</div>
+                <div class="metric-label">Search Queries</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="cartItems">0</div>
+                <div class="metric-label">Items Added to Cart</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="checkouts">0</div>
+                <div class="metric-label">Completed Checkouts</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="errors">0</div>
+                <div class="metric-label">Business Errors</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="avgResponseTime">0ms</div>
+                <div class="metric-label">Avg Response Time</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="monitoring-feed">
+        <div><strong>🔴 Live Monitoring Feed</strong></div>
+        <div>Real-time business events with context...</div>
+        <div id="monitoringLogs"></div>
+    </div>
+
+    <div class="stats-panel">
+        <h3>System Statistics</h3>
+        <pre id="systemStats"></pre>
+    </div>
+
+    <!-- Load observ-metrics library -->
+    <script type="module">
+        // In a real app, you would: import { createObservMetrics, defaultConfigs } from 'observ-metrics'
+        
+        // Simulate the library for demo purposes
+        class MockObservMetrics {
+            constructor(config) {
+                this.config = config
+                this.stats = {
+                    loginAttempts: 0,
+                    searchQueries: 0,
+                    cartItems: 0,
+                    checkouts: 0,
+                    errors: 0,
+                    responseTimes: []
+                }
+                this.userContext = config.userContext
+            }
+
+            async initialize() {
+                this.addLog('info', 'observ-metrics initialized with business context monitoring')
+                this.addLog('info', ` filtering enabled (Bot detection: ${this.config.filtering.enableBotDetection})`)
+                this.addLog('info', `📡 Platform: ${this.config.platform.platform}`)
+                this.updateUI()
+            }
+
+            auth() {
+                return {
+                    instrumentUserJourney: async (journey, step, operation) => {
+                        this.addLog('info', `[AUTH] 🛤️ Journey: ${journey} → ${step}`)
+                        const startTime = Date.now()
+                        
+                        try {
+                            await operation()
+                            const duration = Date.now() - startTime
+                            this.stats.responseTimes.push(duration)
+                            this.addLog('success', `[AUTH] ${step} completed (${duration}ms)`)
+                            
+                            if (step === 'submit_login') {
+                                this.stats.loginAttempts++
+                                this.userContext.isAuthenticated = true
+                                this.userContext.userSegment = 'authenticated_user'
+                            }
+                            
+                            return { success: true, duration }
+                        } catch (error) {
+                            this.addLog('error', `[AUTH] ${step} failed: ${error.message}`)
+                            throw error
+                        }
+                    },
+                    
+                    instrumentApiCall: async (name, endpoint, method, context) => {
+                        const startTime = Date.now()
+                        this.addLog('info', `[AUTH] 📡 API: ${method} ${endpoint}`)
+                        
+                        // Simulate API call
+                        await new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 800))
+                        
+                        const duration = Date.now() - startTime
+                        this.stats.responseTimes.push(duration)
+                        this.addLog('success', `[AUTH] ${name} API success (${duration}ms)`)
+                        
+                        return { success: true, duration }
+                    },
+                    
+                    recordBusinessMetric: (metric, value, context) => {
+                        this.addLog('info', `[AUTH] Business metric: ${metric} = ${value}`)
+                    },
+                    
+                    trackError: (error, context) => {
+                        this.stats.errors++
+                        this.addLog('error', `[AUTH] 🚨 Error tracked: ${error.message}`)
+                    }
+                }
+            }
+
+            ecommerce() {
+                return {
+                    instrumentApiCall: async (name, endpoint, method, context) => {
+                        const startTime = Date.now()
+                        this.addLog('info', `[ECOMMERCE] 📡 API: ${method} ${endpoint}`)
+                        
+                        // Simulate API call with business context
+                        await new Promise(resolve => setTimeout(resolve, 300 + Math.random() * 1200))
+                        
+                        const duration = Date.now() - startTime
+                        this.stats.responseTimes.push(duration)
+                        
+                        // Check SLA violations (demo: 1000ms target)
+                        if (duration > 1000) {
+                            this.addLog('warning', `[ECOMMERCE] ⚠️ SLA violation: ${duration}ms > 1000ms`)
+                        } else {
+                            this.addLog('success', `[ECOMMERCE] ${name} API success (${duration}ms)`)
+                        }
+                        
+                        if (name === 'add_to_cart') {
+                            this.stats.cartItems++
+                        }
+                        
+                        return { success: true, duration }
+                    },
+                    
+                    instrumentUserJourney: async (journey, step, operation) => {
+                        this.addLog('info', `[ECOMMERCE] 🛤️ Journey: ${journey} → ${step}`)
+                        
+                        try {
+                            const result = await operation()
+                            
+                            if (journey === 'purchase_flow' && step === 'complete_purchase') {
+                                this.stats.checkouts++
+                                this.addLog('success', `[ECOMMERCE] 🎉 Purchase completed! Conversion tracked`)
+                            }
+                            
+                            return result
+                        } catch (error) {
+                            this.addLog('error', `[ECOMMERCE] ${step} failed: ${error.message}`)
+                            throw error
+                        }
+                    },
+                    
+                    recordBusinessMetric: (metric, value, context) => {
+                        this.addLog('info', `[ECOMMERCE] Business metric: ${metric} = ${value}`)
+                    },
+                    
+                    trackError: (error, context) => {
+                        this.stats.errors++
+                        this.addLog('error', `[ECOMMERCE] 🚨 Error tracked: ${error.message}`)
+                    }
+                }
+            }
+
+            content() {
+                return {
+                    instrumentUserJourney: async (journey, step, operation) => {
+                        this.addLog('info', `[CONTENT] Journey: ${journey} → ${step}`)
+                        
+                        try {
+                            await operation()
+                            
+                            if (step === 'search_query') {
+                                this.stats.searchQueries++
+                            }
+                            
+                            this.addLog('success', `[CONTENT] ${step} completed`)
+                            return { success: true }
+                        } catch (error) {
+                            this.addLog('error', `[CONTENT] ${step} failed: ${error.message}`)
+                            throw error
+                        }
+                    },
+                    
+                    instrumentApiCall: async (name, endpoint, method, context) => {
+                        const startTime = Date.now()
+                        this.addLog('info', `[CONTENT] 📡 API: ${method} ${endpoint}`)
+                        
+                        await new Promise(resolve => setTimeout(resolve, 150 + Math.random() * 500))
+                        
+                        const duration = Date.now() - startTime
+                        this.stats.responseTimes.push(duration)
+                        this.addLog('success', `[CONTENT] ${name} API success (${duration}ms)`)
+                        
+                        return { success: true, duration }
+                    },
+                    
+                    recordBusinessMetric: (metric, value, context) => {
+                        this.addLog('info', `[CONTENT] Business metric: ${metric} = ${value}`)
+                    }
+                }
+            }
+
+            updateUserContext(newContext) {
+                this.userContext = { ...this.userContext, ...newContext }
+                this.addLog('info', `👤 User context updated: ${JSON.stringify(newContext)}`)
+                this.updateUI()
+            }
+
+            getStats() {
+                const avgResponseTime = this.stats.responseTimes.length > 0 
+                    ? Math.round(this.stats.responseTimes.reduce((a, b) => a + b, 0) / this.stats.responseTimes.length)
+                    : 0
+
+                return {
+                    initialized: true,
+                    domains: ['authentication', 'ecommerce', 'content'],
+                    userContext: this.userContext,
+                    businessMetrics: {
+                        loginAttempts: this.stats.loginAttempts,
+                        searchQueries: this.stats.searchQueries,
+                        cartItems: this.stats.cartItems,
+                        checkouts: this.stats.checkouts,
+                        errors: this.stats.errors,
+                        avgResponseTime
+                    },
+                    filtering: {
+                        botDetectionEnabled: this.config.filtering.enableBotDetection,
+                        samplingRate: this.config.filtering.samplingRate,
+                        domainWhitelist: this.config.filtering.domainWhitelist
+                    }
+                }
+            }
+
+            addLog(level, message) {
+                const timestamp = new Date().toLocaleTimeString()
+                const logEntry = document.createElement('div')
+                logEntry.className = `log-entry log-${level}`
+                logEntry.innerHTML = `<span style="color: #666">[${timestamp}]</span> ${message}`
+                
+                const logsContainer = document.getElementById('monitoringLogs')
+                logsContainer.appendChild(logEntry)
+                logsContainer.scrollTop = logsContainer.scrollHeight
+                
+                // Update UI metrics
+                this.updateUI()
+            }
+
+            updateUI() {
+                const stats = this.getStats()
+                
+                // Update user context display
+                document.getElementById('userContext').textContent = JSON.stringify(this.userContext, null, 2)
+                
+                // Update business metrics
+                document.getElementById('loginAttempts').textContent = stats.businessMetrics.loginAttempts
+                document.getElementById('searchQueries').textContent = stats.businessMetrics.searchQueries
+                document.getElementById('cartItems').textContent = stats.businessMetrics.cartItems
+                document.getElementById('checkouts').textContent = stats.businessMetrics.checkouts
+                document.getElementById('errors').textContent = stats.businessMetrics.errors
+                document.getElementById('avgResponseTime').textContent = `${stats.businessMetrics.avgResponseTime}ms`
+                
+                // Update system stats
+                document.getElementById('systemStats').textContent = JSON.stringify(stats, null, 2)
+            }
+        }
+
+        // Initialize observ-metrics
+        const monitoring = new MockObservMetrics({
+            userContext: {
+                userSegment: 'anonymous',
+                isAuthenticated: false,
+                deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
+            },
+            domains: [
+                {
+                    name: 'authentication',
+                    priority: 'critical',
+                    slaTarget: 2000,
+                    errorThreshold: 0.1,
+                    features: ['login', 'register']
+                },
+                {
+                    name: 'ecommerce', 
+                    priority: 'critical',
+                    slaTarget: 1000,
+                    errorThreshold: 0.05,
+                    features: ['cart', 'checkout']
+                },
+                {
+                    name: 'content',
+                    priority: 'medium', 
+                    slaTarget: 800,
+                    errorThreshold: 1.0,
+                    features: ['search', 'browse']
+                }
+            ],
+            filtering: {
+                enableBotDetection: true,
+                domainWhitelist: [window.location.hostname],
+                errorThreshold: 5.0,
+                samplingRate: 1.0,
+                excludeExtensions: true,
+                excludeThirdPartyErrors: true
+            },
+            platform: {
+                platform: 'console',
+                batchSize: 10,
+                flushInterval: 5000
+            },
+            debug: true
+        })
+
+        // Initialize monitoring
+        await monitoring.initialize()
+
+        // Event handlers
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('loginBtn')
+            btn.disabled = true
+            btn.textContent = 'Logging in...'
+            
+            try {
+                await monitoring.auth().instrumentUserJourney('user_login_flow', 'submit_login', async () => {
+                    return await monitoring.auth().instrumentApiCall('login', '/api/auth/login', 'POST')
+                })
+                
+                monitoring.updateUserContext({
+                    userId: 'user_123',
+                    isAuthenticated: true,
+                    userSegment: 'premium_user'
+                })
+                
+                btn.textContent = 'Logged In ✓'
+                setTimeout(() => {
+                    btn.textContent = 'Simulate Login'
+                    btn.disabled = false
+                }, 2000)
+                
+            } catch (error) {
+                monitoring.auth().trackError(error)
+                btn.disabled = false
+                btn.textContent = 'Simulate Login'
+            }
+        })
+
+        document.getElementById('searchBtn').addEventListener('click', async () => {
+            await monitoring.content().instrumentUserJourney('product_discovery', 'search_query', async () => {
+                return await monitoring.content().instrumentApiCall('search', '/api/search?q=electronics', 'GET')
+            })
+            
+            monitoring.content().recordBusinessMetric('search_success_rate', 94.5, { query_type: 'electronics' })
+        })
+
+        document.getElementById('addToCartBtn').addEventListener('click', async () => {
+            await monitoring.ecommerce().instrumentApiCall('add_to_cart', '/api/cart/add', 'POST', {
+                customAttributes: { product_id: 123, price: 49.99 }
+            })
+            
+            monitoring.ecommerce().recordBusinessMetric('cart_conversion_rate', 12.3, { product_category: 'electronics' })
+        })
+
+        document.getElementById('checkoutBtn').addEventListener('click', async () => {
+            await monitoring.ecommerce().instrumentUserJourney('purchase_flow', 'complete_purchase', async () => {
+                // Multi-step checkout process
+                await monitoring.ecommerce().instrumentApiCall('validate_cart', '/api/cart/validate', 'POST')
+                await monitoring.ecommerce().instrumentApiCall('process_payment', '/api/payment', 'POST')
+                return await monitoring.ecommerce().instrumentApiCall('create_order', '/api/orders', 'POST')
+            })
+            
+            monitoring.ecommerce().recordBusinessMetric('revenue_generated', 149.97, { payment_method: 'credit_card' })
+        })
+
+        document.getElementById('errorBtn').addEventListener('click', async () => {
+            try {
+                await monitoring.ecommerce().instrumentApiCall('failing_api', '/api/will-fail', 'POST')
+            } catch (error) {
+                // This will be caught and handled by the mock implementation
+            }
+            
+            // Simulate various error scenarios
+            const errors = [
+                new Error('Payment processing failed'),
+                new Error('Inventory not available'),
+                new Error('Invalid user session')
+            ]
+            
+            const randomError = errors[Math.floor(Math.random() * errors.length)]
+            monitoring.ecommerce().trackError(randomError, { 
+                operation: 'business_operation',
+                user_impact: 'high'
+            })
+        })
+
+        // Update UI every 5 seconds
+        setInterval(() => {
+            monitoring.updateUI()
+        }, 5000)
+    </script>
+</body>
+</html>
