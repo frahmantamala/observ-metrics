@@ -58,18 +58,6 @@ graph TD
 - **Framework Agnostic**: React, Vue, Angular, vanilla JS - works everywhere
 - **Zero Vendor Lock-in**: Switch platforms without changing your instrumentation code
 
-## Benchmarks
-
-Real-world results from production deployments:
-
-| Metric | Before observ-metrics | After observ-metrics | Improvement |
-|--------|----------------------|---------------------|-------------|
-| **Signal-to-Noise Ratio** | 20% useful data | 95% actionable data | **375% improvement** |
-| **Monthly Monitoring Costs** | $500 (100k spans) | $100 (20k relevant spans) | **80% cost reduction** |
-| **False Positive Alerts** | 50+ per day | 3-5 per day | **90% reduction** |
-| **Time to Root Cause** | 2-4 hours | 15-30 minutes | **75% faster** |
-| **Business KPI Correlation** | 0% (no business context) | 100% (all metrics tagged) | **Complete visibility** |
-
 ## Installation
 
 ```bash
