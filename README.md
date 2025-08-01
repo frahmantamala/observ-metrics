@@ -9,60 +9,6 @@
 
 > **Was come from frustration with noisy monitoring data.** Turn your frontend observability from overwhelming noise into actionable business insights.
 
-## The Problem We All Know
-
-Most development teams struggle with frontend monitoring that feels more like noise than signal. You're probably familiar with these challenges:
-
-### **What Teams Actually Experience:**
-
-| **Common Pain Points** | **What observ-metrics Delivers** |
-|------------------------|-----------------------------------|
-| Drowning in irrelevant data from bots and browser extensions | Clean, business-focused insights from real user interactions |
-| High monitoring costs with questionable value | Cost-effective monitoring that scales with actual usage |
-| Dashboards that look impressive but don't drive decisions | Metrics directly tied to business outcomes you care about |
-| Alert fatigue from events that don't impact users | Smart alerts only for issues that affect real customers |
-| Disconnect between technical metrics and business impact | Clear visibility into how performance affects conversion and engagement |
-
-### **Real-World Impact:**
-
-**Before:** "Our error rate is up 15% this week" *(but is it actually affecting users?)*
-
-**After:** "Premium users are experiencing 8% more checkout failures, costing us ~$2,400 in potential revenue this week"
-
-**Before:** "Page load time increased by 200ms" *(okay, but so what?)*
-
-**After:** "Search performance degraded, reducing product discovery completion by 12% for mobile users"
-
-### **Why This Matters:**
-
-Instead of generic technical metrics, you get insights that directly inform business decisions:
-- Which performance issues actually hurt conversion rates
-- How user experience problems correlate with revenue loss  
-- Where to invest engineering time for maximum business impact
-- Real user behavior patterns vs automated traffic
-
-The goal isn't just better monitoring—it's monitoring that helps you build a better product for your actual users.
-
-## The Solution: Smart Monitoring That Actually Helps
-
-**observ-metrics** was come from the frustration of wading through useless monitoring data. It's a simple idea executed smartly: only track what matters for your business.
-
-Instead of another complex monitoring tool, it provides a smart filtering and business context layer that sits between your application and existing observability platforms:
-
-```mermaid
-graph TD
-    A[Your App] --> B[observ-metrics]
-    B --> C{ Filter}
-    C -->|Real Users Only| D[Business Context Layer]
-    C -->|Filtered Out| E[🗑️ Bots, Extensions, Noise]
-    D --> F[Datadog/NewRelic/Grafana]
-    
-    D --> G[Revenue Impact]
-    D --> H[Engagement Impact]  
-    D --> I[Performance Impact]
-    D --> J[Reliability Impact]
-```
-
 ## Key Features
 
 ### ** Filtering Engine**
@@ -73,7 +19,7 @@ graph TD
 
 ### **Business Context Tagging**
 - **Domain-Driven Architecture**: Organize monitoring by business domains (auth, ecommerce, content)
-- **Impact Classification**: Tag every metric with business impact (revenue, engagement, performance, reliability)
+- **Impact Classification**: Tag every metric with impact (revenue, engagement, performance, reliability)
 - **User Journey Tracking**: Complete funnel analysis with conversion tracking
 - **SLA Monitoring**: Domain-specific performance targets and alerting
 
@@ -410,7 +356,7 @@ const platform = {
 
 **New Relic Query Examples:**
 ```sql
--- Business impact analysis
+-- Impact analysis
 SELECT average(duration) FROM BusinessMetric 
 WHERE businessImpact = 'revenue' 
 FACET userSegment SINCE 1 hour ago
@@ -445,9 +391,9 @@ rate(observ_metrics_business_revenue_total[1h]) / rate(observ_metrics_journey_st
 ```
 </details>
 
-## Business Impact Tracking
+## Impact Tracking
 
-### Revenue Impact Metrics
+### Impact Metrics
 ```typescript
 // Track metrics that directly impact revenue
 monitoring.ecommerce().recordBusinessMetric('cart_abandonment_rate', 25.5, {
@@ -585,7 +531,7 @@ monitoring.addFilter((event, context) => {
 - **User Journey Analysis**: Understand how users navigate your content
 
 ### **Financial Applications**
-- **Transaction Success Rates**: Monitor payment processing with business impact context
+- **Transaction Success Rates**: Monitor payment processing with impact context
 - **Security Event Tracking**: Track authentication and fraud prevention effectiveness  
 - **Compliance Monitoring**: Ensure regulatory requirements are met with audit trails
 - **Customer Experience**: Connect technical performance to customer satisfaction
