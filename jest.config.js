@@ -1,5 +1,6 @@
-module.exports = {
-  preset: 'ts-jest',
+export default {
+  preset: 'ts-jest/presets/default-esm',
+  extensionsToTreatAsEsm: ['.ts'],
   testEnvironment: 'jsdom',
   roots: ['<rootDir>/src', '<rootDir>/tests'],
   testMatch: [
@@ -7,7 +8,9 @@ module.exports = {
     '**/*.(test|spec).+(ts|tsx|js)'
   ],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      useESM: true
+    }]
   },
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
