@@ -1,6 +1,7 @@
 {
   "name": "observ-metrics",
   "version": "1.0.0",
+  "type": "module",
   "description": "Frontend monitoring library that eliminates noise and adds business context to OpenTelemetry data",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
