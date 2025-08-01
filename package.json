@@ -41,17 +41,17 @@
   "author": {
     "name": "Fadhil",
     "email": "your-email@example.com",
-    "url": "https://github.com/yourusername"
+    "url": "https://github.com/frahmantamala"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/observ-metrics.git"
+    "url": "https://github.com/frahmantamala/observ-metrics.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/observ-metrics/issues"
+    "url": "https://github.com/frahmantamala/observ-metrics/issues"
   },
-  "homepage": "https://github.com/yourusername/observ-metrics#readme",
+  "homepage": "https://github.com/frahmantamala/observ-metrics#readme",
   "dependencies": {
     "@opentelemetry/api": ">=1.8.0",
     "@opentelemetry/auto-instrumentations-web": "^0.39.0",

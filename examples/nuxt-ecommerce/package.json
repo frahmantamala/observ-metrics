@@ -49,13 +49,12 @@
     "demo"
   ],
   "author": {
-    "name": "Fadhil",
-    "email": "your-email@example.com"
+    "name": "Fadhil"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/observ-metrics.git",
+    "url": "https://github.com/frahmantamala/observ-metrics.git",
     "directory": "examples/nuxt-ecommerce"
   }
 }

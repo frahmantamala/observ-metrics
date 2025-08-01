@@ -677,7 +677,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Development Setup
 ```bash
-git clone https://github.com/yourusername/observ-metrics.git
+git clone https://github.com/frahmantamala/observ-metrics.git
 cd observ-metrics
 npm install
 npm run dev
@@ -697,13 +697,13 @@ cd examples/vue-app && npm run serve
 
 ## License
 
-MIT © [Fadhil](https://github.com/yourusername)
+MIT © [Fadhil](https://github.com/frahmantamala)
 
 ## 🔗 Links
 
 - [Documentation](https://observ-metrics.dev/docs)
-- [Issues](https://github.com/yourusername/observ-metrics/issues)
-- [Discussions](https://github.com/yourusername/observ-metrics/discussions)
+- [Issues](https://github.com/frahmantamala/observ-metrics/issues)
+- [Discussions](https://github.com/frahmantamala/observ-metrics/discussions)
 - [NPM Package](https://www.npmjs.com/package/observ-metrics)
 
 ---
@@ -712,6 +712,6 @@ MIT © [Fadhil](https://github.com/yourusername)
 
 **Built by developers, for developers, to solve real monitoring problems.**
 
-[Star on GitHub](https://github.com/yourusername/observ-metrics) • [Read the Docs](https://observ-metrics.dev) • [Try the Demo](https://observ-metrics.dev/demo)
+[Star on GitHub](https://github.com/frahmantamala/observ-metrics) • [Read the Docs](https://observ-metrics.dev) • [Try the Demo](https://observ-metrics.dev/demo)
 
 </div>
