@@ -391,7 +391,7 @@ export const defaultConfigs = {
     ],
     filtering: {
       enableBotDetection: true,
-      domainWhitelist: [window?.location?.hostname || 'localhost'],
+      domainWhitelist: [typeof window !== 'undefined' && window.location ? window.location.hostname : 'localhost'],
       errorThreshold: 5.0,
       samplingRate: 1.0,
       excludeExtensions: true,

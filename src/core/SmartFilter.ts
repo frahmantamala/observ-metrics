@@ -124,7 +124,7 @@ export class Filter {
     if ((window as any).callPhantom || (window as any)._phantom) return true
 
     // Check for missing features typical in headless browsers
-    if (!window.outerHeight || !window.outerWidth) return true
+    if (typeof window !== 'undefined' && (!window.outerHeight || !window.outerWidth)) return true
 
     // Check for webdriver property
     if ((navigator as any).webdriver) return true
@@ -164,7 +164,7 @@ export class Filter {
   private isDomainAllowed(event: TelemetryEvent): boolean {
     if (!this.config.domainWhitelist || this.config.domainWhitelist.length === 0) return true
 
-    const currentDomain = window.location.hostname
+    const currentDomain = typeof window !== 'undefined' && window.location ? window.location.hostname : 'localhost'
     return this.config.domainWhitelist.includes(currentDomain)
   }
 
@@ -209,7 +209,7 @@ export class Filter {
     // For now, assume real user if not detected as bot
 
     // Has proper viewport
-    if (window.innerWidth > 0 && window.innerHeight > 0) return true
+    if (typeof window !== 'undefined' && window.innerWidth > 0 && window.innerHeight > 0) return true
 
     // Has normal timezone
     const timezoneOffset = new Date().getTimezoneOffset()

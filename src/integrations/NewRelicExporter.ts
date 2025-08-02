@@ -264,7 +264,7 @@ export class NewRelicExporter implements ExporterPlugin {
       journeyStep: event.attributes['journey.step'],
       
       // Technical context
-      url: event.attributes['http.url'] || window.location.href,
+      url: event.attributes['http.url'] || (typeof window !== 'undefined' && window.location ? window.location.href : 'unknown'),
       userAgent: navigator.userAgent,
       
       // Additional business context

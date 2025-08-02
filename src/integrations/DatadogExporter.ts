@@ -118,7 +118,7 @@ export class DatadogExporter implements ExporterPlugin {
       timestamp: new Date(event.timestamp).getTime(),
       source: 'observ-metrics',
       service: 'frontend-app',
-      host: window.location.hostname,
+      host: typeof window !== 'undefined' && window.location ? window.location.hostname : 'unknown',
       
       // Business context tags (key differentiator)
       tags: [
