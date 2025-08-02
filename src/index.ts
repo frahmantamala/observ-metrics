@@ -32,7 +32,17 @@ export class ObservMetrics {
   private isInitialized = false
 
   constructor(private config: ObservMetricsConfig) {
-    this.Filter = new Filter(config.filtering)
+    // Ensure platform config has default values if not provided
+    this.config = {
+      userContext: {},
+      ...config,
+      platform: {
+        platform: 'console',
+        ...config.platform
+      }
+    }
+    
+    this.Filter = new Filter(this.config.filtering)
     this.setupExporters()
   }
 

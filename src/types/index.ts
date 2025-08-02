@@ -40,10 +40,10 @@ export interface PlatformConfig {
 }
 
 export interface ObservMetricsConfig {
-  userContext: Partial<UserContext>
+  userContext?: Partial<UserContext>
   domains: DomainConfig[]
   filtering: FilterConfig
-  platform: PlatformConfig
+  platform?: PlatformConfig
   debug?: boolean
 }
 
